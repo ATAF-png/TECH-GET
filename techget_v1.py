@@ -74,20 +74,30 @@ class AdvancedTechDetector:
             'Google Analytics 4': {'patterns': ['gtag\\.js', 'ga4', 'google.*analytics.*4'], 'type': 'analytics'},
             'Hotjar': {'patterns': ['hotjar', '_hj'], 'type': 'analytics'},
             
-            # Authentication Services
-            'Auth0': {'patterns': ['auth0', 'auth0\\.com', '\\.auth0\\.com'], 'type': 'authentication'},
-            'Firebase Authentication': {'patterns': ['firebase-auth', 'firebaseapp\\.com'], 'type': 'authentication'},
-            'Okta': {'patterns': ['okta', 'okta\\.com', 'oktapreview\\.com'], 'type': 'authentication'},
-            'OneLogin': {'patterns': ['onelogin', 'onelogin\\.com'], 'type': 'authentication'},
-            'Ping Identity': {'patterns': ['pingidentity'], 'type': 'authentication'},
-            'Keycloak': {'patterns': ['keycloak'], 'type': 'authentication'},
-            'Cognito': {'patterns': ['cognito', 'amazoncognito\\.com'], 'type': 'authentication'},
-            'Azure AD': {'patterns': ['azure.*ad', 'microsoftonline\\.com'], 'type': 'authentication'},
-            'Google Sign-In': {'patterns': ['google.*signin', 'accounts\\.google\\.com'], 'type': 'authentication'},
-            'Facebook Login': {'patterns': ['facebook.*login', 'fb-login'], 'type': 'authentication'},
-            'OAuth': {'patterns': ['oauth', 'oauth2'], 'type': 'authentication'},
-            'Passport.js': {'patterns': ['passport', 'passport\\.js'], 'type': 'authentication'},
-            'JWT': {'patterns': ['jwt', 'jsonwebtoken'], 'type': 'authentication'},
+            # Authentication Services with detailed types
+            'Auth0 (Enterprise SSO)': {'patterns': ['auth0', 'auth0\\.com', '\\.auth0\\.com'], 'type': 'authentication', 'auth_type': 'Enterprise SSO'},
+            'Firebase Authentication (Google)': {'patterns': ['firebase-auth', 'firebaseapp\\.com'], 'type': 'authentication', 'auth_type': 'Cloud Authentication'},
+            'Okta (Enterprise Identity)': {'patterns': ['okta', 'okta\\.com', 'oktapreview\\.com'], 'type': 'authentication', 'auth_type': 'Enterprise Identity'},
+            'OneLogin (SSO Platform)': {'patterns': ['onelogin', 'onelogin\\.com'], 'type': 'authentication', 'auth_type': 'SSO Platform'},
+            'Ping Identity (IAM)': {'patterns': ['pingidentity'], 'type': 'authentication', 'auth_type': 'Identity & Access Management'},
+            'Keycloak (Open Source IAM)': {'patterns': ['keycloak'], 'type': 'authentication', 'auth_type': 'Open Source IAM'},
+            'Amazon Cognito (AWS Auth)': {'patterns': ['cognito', 'amazoncognito\\.com'], 'type': 'authentication', 'auth_type': 'AWS Authentication'},
+            'Azure AD (Microsoft SSO)': {'patterns': ['azure.*ad', 'microsoftonline\\.com'], 'type': 'authentication', 'auth_type': 'Microsoft SSO'},
+            'Google Sign-In (OAuth 2.0)': {'patterns': ['google.*signin', 'accounts\\.google\\.com'], 'type': 'authentication', 'auth_type': 'OAuth 2.0'},
+            'Facebook Login (OAuth)': {'patterns': ['facebook.*login', 'fb-login'], 'type': 'authentication', 'auth_type': 'OAuth'},
+            'OAuth 2.0 Protocol': {'patterns': ['oauth2', 'oauth/authorize', 'oauth/token'], 'type': 'authentication', 'auth_type': 'OAuth 2.0 Protocol'},
+            'OAuth 1.0 Protocol': {'patterns': ['oauth', 'oauth/request_token'], 'type': 'authentication', 'auth_type': 'OAuth 1.0 Protocol'},
+            'Passport.js (Node.js Middleware)': {'patterns': ['passport', 'passport\\.js'], 'type': 'authentication', 'auth_type': 'Node.js Authentication Middleware'},
+            'JWT (JSON Web Tokens)': {'patterns': ['jwt', 'jsonwebtoken', 'Bearer eyJ'], 'type': 'authentication', 'auth_type': 'Token-Based Authentication'},
+            'OpenID Connect': {'patterns': ['openid', '\\.well-known/openid-configuration'], 'type': 'authentication', 'auth_type': 'OpenID Connect'},
+            'SAML 2.0': {'patterns': ['saml', 'saml2', 'saml/SSO'], 'type': 'authentication', 'auth_type': 'SAML 2.0'},
+            'Apple Sign-In (OAuth)': {'patterns': ['appleid\\.apple\\.com', 'apple.*sign'], 'type': 'authentication', 'auth_type': 'OAuth'},
+            'GitHub OAuth': {'patterns': ['github.*oauth', 'github.*login'], 'type': 'authentication', 'auth_type': 'OAuth'},
+            'Basic Authentication': {'patterns': ['basic.*auth', 'authorization: basic'], 'type': 'authentication', 'auth_type': 'Basic HTTP Authentication'},
+            'LDAP Authentication': {'patterns': ['ldap', 'ldap://', 'ldaps://'], 'type': 'authentication', 'auth_type': 'LDAP Directory'},
+            'Session Cookies': {'patterns': ['sessionid', 'session', 'PHPSESSID'], 'type': 'authentication', 'auth_type': 'Session-Based'},
+            'Magic Links': {'patterns': ['magic.*link', 'passwordless'], 'type': 'authentication', 'auth_type': 'Passwordless'},
+            '2FA/MFA': {'patterns': ['2fa', 'mfa', 'two-factor', 'multi-factor'], 'type': 'authentication', 'auth_type': 'Multi-Factor Authentication'},
             
             # Cloud Computing Services
             'Amazon Web Services': {'patterns': ['aws', 'amazonaws', 'x-amz-'], 'type': 'cloud'},
@@ -125,8 +135,9 @@ class AdvancedTechDetector:
             
             # Security
             'Cloudflare': {'patterns': ['cloudflare', 'cf-', '__cfduid'], 'type': 'security'},
-            'reCAPTCHA': {'patterns': ['recaptcha', 'g-recaptcha'], 'type': 'security'},
-            'hCaptcha': {'patterns': ['hcaptcha'], 'type': 'security'},
+            'reCAPTCHA v3': {'patterns': ['recaptcha/api.js?render=', 'grecaptcha.execute'], 'type': 'security', 'auth_type': 'Bot Protection'},
+            'reCAPTCHA v2': {'patterns': ['recaptcha/api.js', 'g-recaptcha'], 'type': 'security', 'auth_type': 'Bot Protection'},
+            'hCaptcha': {'patterns': ['hcaptcha'], 'type': 'security', 'auth_type': 'Bot Protection'},
             
             # Social Media Integration
             'Facebook SDK': {'patterns': ['facebook.*sdk', 'connect\\.facebook\\.net'], 'type': 'social'},
@@ -142,9 +153,9 @@ class AdvancedTechDetector:
             'Disqus': {'patterns': ['disqus', 'disqus\\.com'], 'type': 'social'},
             
             # Social Login
-            'Facebook Login SDK': {'patterns': ['facebook.*login.*sdk'], 'type': 'authentication'},
-            'Google Sign-In SDK': {'patterns': ['google.*sign.*in.*sdk'], 'type': 'authentication'},
-            'Apple Sign-In': {'patterns': ['appleid\\.apple\\.com', 'apple.*sign'], 'type': 'authentication'},
+            'Facebook Login SDK': {'patterns': ['facebook.*login.*sdk'], 'type': 'authentication', 'auth_type': 'Social Login (OAuth)'},
+            'Google Sign-In SDK': {'patterns': ['google.*sign.*in.*sdk'], 'type': 'authentication', 'auth_type': 'Social Login (OAuth)'},
+            'Apple Sign-In SDK': {'patterns': ['apple.*sign.*in.*sdk'], 'type': 'authentication', 'auth_type': 'Social Login (OAuth)'},
             
             # Additional
             'Bootstrap': {'patterns': ['bootstrap', 'bs-'], 'type': 'css'},
@@ -192,10 +203,14 @@ class AdvancedTechDetector:
                 'TikTok': ['tiktok\\.com'],
             },
             'authentication': {
-                'Auth0': ['auth0', 'auth0\\.com'],
-                'Firebase Auth': ['firebaseapp\\.com'],
-                'OAuth': ['oauth', 'oauth2'],
-                'JWT': ['jwt', 'Bearer '],
+                'OAuth 2.0': ['oauth2', 'oauth/authorize', 'oauth/token', 'code=', 'access_token='],
+                'OAuth 1.0': ['oauth', 'oauth/request_token', 'oauth_signature='],
+                'JWT': ['eyJ', 'Bearer eyJ', 'jwt=', 'token_type=Bearer'],
+                'SAML': ['SAMLRequest', 'SAMLResponse', 'saml/SSO'],
+                'OpenID': ['openid', 'oidc'],
+                'LDAP': ['ldap://', 'ldaps://'],
+                'Session': ['sessionid=', 'PHPSESSID=', 'JSESSIONID='],
+                'Basic Auth': ['authorization: basic', 'www-authenticate: basic'],
             }
         }
     
@@ -211,6 +226,8 @@ class AdvancedTechDetector:
             {'url': url, 'verify': False},
             {'url': url.replace('https://', 'http://'), 'verify': False},
             {'url': f"{url}/robots.txt", 'verify': False},
+            {'url': f"{url}/login", 'verify': False},
+            {'url': f"{url}/auth/login", 'verify': False},
         ]
         
         for attempt in attempts:
@@ -229,7 +246,7 @@ class AdvancedTechDetector:
         
         return None, "Failed to fetch URL after multiple attempts"
     
-    def analyze_headers(self, response: requests.Response) -> List[str]:
+    def analyze_headers(self, response: requests.Response) -> List[Dict]:
         """Analyze HTTP headers for technologies"""
         detected = []
         headers = {k.lower(): v.lower() for k, v in response.headers.items()}
@@ -238,42 +255,56 @@ class AdvancedTechDetector:
         if 'server' in headers:
             server = headers['server']
             if 'apache' in server:
-                detected.append('Apache')
+                detected.append({'name': 'Apache', 'type': 'server', 'details': 'Web Server'})
             if 'nginx' in server:
-                detected.append('Nginx')
+                detected.append({'name': 'Nginx', 'type': 'server', 'details': 'Web Server'})
             if 'iis' in server or 'microsoft-iis' in server:
-                detected.append('Microsoft-IIS')
+                detected.append({'name': 'Microsoft IIS', 'type': 'server', 'details': 'Web Server'})
             if 'cloudflare' in server:
-                detected.append('Cloudflare')
+                detected.append({'name': 'Cloudflare', 'type': 'security', 'details': 'CDN & Security'})
         
         # X-Powered-By header
         if 'x-powered-by' in headers:
             powered_by = headers['x-powered-by']
             if 'php' in powered_by:
-                detected.append('PHP')
+                detected.append({'name': 'PHP', 'type': 'backend', 'details': 'Backend Language'})
             if 'asp.net' in powered_by:
-                detected.append('ASP.NET')
+                detected.append({'name': 'ASP.NET', 'type': 'backend', 'details': 'Backend Framework'})
             if 'express' in powered_by:
-                detected.append('Node.js')
+                detected.append({'name': 'Node.js (Express)', 'type': 'backend', 'details': 'Backend Runtime'})
             if 'django' in powered_by:
-                detected.append('Django')
+                detected.append({'name': 'Django', 'type': 'backend', 'details': 'Python Framework'})
+        
+        # Authentication headers
+        if 'www-authenticate' in headers:
+            auth_header = headers['www-authenticate']
+            if 'basic' in auth_header:
+                detected.append({'name': 'Basic Authentication', 'type': 'authentication', 'details': 'HTTP Basic Auth'})
+            if 'bearer' in auth_header:
+                detected.append({'name': 'Bearer Token', 'type': 'authentication', 'details': 'Token-Based Auth'})
+        
+        # Check for JWT tokens in headers
+        for header_name, header_value in response.headers.items():
+            if 'authorization' in header_name.lower() and 'bearer' in header_value.lower():
+                if 'eyJ' in header_value:  # JWT token pattern
+                    detected.append({'name': 'JWT Authentication', 'type': 'authentication', 'details': 'JSON Web Token'})
         
         # Other headers
         for header, value in headers.items():
             if 'vercel' in header or 'vercel' in value:
-                detected.append('Vercel')
+                detected.append({'name': 'Vercel', 'type': 'hosting', 'details': 'Hosting Platform'})
             if 'netlify' in header or 'netlify' in value:
-                detected.append('Netlify')
+                detected.append({'name': 'Netlify', 'type': 'hosting', 'details': 'Hosting Platform'})
             if 'heroku' in header or 'heroku' in value:
-                detected.append('Heroku')
+                detected.append({'name': 'Heroku', 'type': 'hosting', 'details': 'Platform as a Service'})
             if 'aws' in header or 'amazon' in value:
-                detected.append('Amazon Web Services')
+                detected.append({'name': 'Amazon Web Services', 'type': 'cloud', 'details': 'Cloud Platform'})
             if 'azure' in header:
-                detected.append('Azure')
+                detected.append({'name': 'Azure', 'type': 'cloud', 'details': 'Microsoft Cloud'})
         
-        return list(set(detected))
+        return detected
     
-    def analyze_html_content(self, html: str) -> List[str]:
+    def analyze_html_content(self, html: str) -> List[Dict]:
         """Analyze HTML content for technologies"""
         detected = []
         soup = BeautifulSoup(html, 'html.parser')
@@ -283,7 +314,7 @@ class AdvancedTechDetector:
             content = meta.get('content', '').lower()
             for tech, patterns in self.extended_patterns['generator_meta'].items():
                 if any(pattern in content for pattern in patterns):
-                    detected.append(tech)
+                    detected.append({'name': tech, 'type': 'cms', 'details': 'Content Management System'})
         
         # Script tags analysis
         for script in soup.find_all('script'):
@@ -294,36 +325,36 @@ class AdvancedTechDetector:
             for tech, data in self.tech_signatures.items():
                 patterns = data['patterns']
                 if any(re.search(pattern, src, re.IGNORECASE) for pattern in patterns):
-                    detected.append(tech)
+                    tech_type = data.get('type', 'other')
+                    auth_type = data.get('auth_type', '')
+                    details = auth_type if auth_type else data.get('details', tech_type)
+                    detected.append({'name': tech, 'type': tech_type, 'details': details})
             
-            # Inline script analysis
+            # Inline script analysis for authentication
             if content:
                 content_lower = content.lower()
-                # Check for social media scripts
-                for tech, patterns in self.extended_patterns['social_media'].items():
-                    if any(pattern.lower() in content_lower for pattern in patterns):
-                        if tech not in detected:
-                            detected.append(tech)
                 
-                # Check for authentication
-                for tech, patterns in self.extended_patterns['authentication'].items():
+                # Check for authentication patterns
+                for auth_name, patterns in self.extended_patterns['authentication'].items():
                     if any(pattern.lower() in content_lower for pattern in patterns):
-                        if tech not in detected:
-                            detected.append(tech)
+                        detected.append({'name': auth_name, 'type': 'authentication', 'details': 'Authentication Protocol'})
+                
+                # Check for social media
+                for social, patterns in self.extended_patterns['social_media'].items():
+                    if any(pattern.lower() in content_lower for pattern in patterns):
+                        detected.append({'name': social, 'type': 'social', 'details': 'Social Media Platform'})
                 
                 # Check for JS frameworks
                 for tech, patterns in self.extended_patterns['js_frameworks'].items():
                     if any(pattern.lower() in content_lower for pattern in patterns):
-                        if tech not in detected:
-                            detected.append(tech)
+                        detected.append({'name': tech, 'type': 'frontend', 'details': 'JavaScript Framework'})
         
         # Link tags (CSS)
         for link in soup.find_all('link', attrs={'rel': 'stylesheet'}):
             href = link.get('href', '').lower()
             for tech, patterns in self.extended_patterns['css_frameworks'].items():
                 if any(pattern.lower() in href for pattern in patterns):
-                    if tech not in detected:
-                        detected.append(tech)
+                    detected.append({'name': tech, 'type': 'css', 'details': 'CSS Framework'})
         
         # Meta tags for social media
         for meta in soup.find_all('meta'):
@@ -332,88 +363,103 @@ class AdvancedTechDetector:
             
             # Open Graph (Facebook)
             if 'og:' in prop:
-                if 'facebook' not in detected:
-                    detected.append('Facebook Open Graph')
+                detected.append({'name': 'Facebook Open Graph', 'type': 'social', 'details': 'Social Meta Tags'})
             
             # Twitter Cards
             if 'twitter:' in prop:
-                if 'Twitter Cards' not in detected:
-                    detected.append('Twitter Cards')
+                detected.append({'name': 'Twitter Cards', 'type': 'social', 'details': 'Social Meta Tags'})
         
-        # HTML attributes and classes
-        for element in soup.find_all(attrs=True):
-            # Class analysis
-            classes = element.get('class', [])
-            if classes:
-                class_str = ' '.join(classes).lower()
-                for tech, patterns in self.extended_patterns['css_frameworks'].items():
-                    if any(pattern.lower() in class_str for pattern in patterns):
-                        if tech not in detected:
-                            detected.append(tech)
+        # Form analysis for authentication
+        for form in soup.find_all('form'):
+            action = form.get('action', '').lower()
+            method = form.get('method', '').lower()
+            form_html = str(form).lower()
             
-            # Attribute analysis
-            for attr_name, attr_value in element.attrs.items():
-                if isinstance(attr_value, str):
-                    attr_str = f"{attr_name}={attr_value}".lower()
-                    for tech, data in self.tech_signatures.items():
-                        patterns = data['patterns']
-                        if any(re.search(pattern, attr_str, re.IGNORECASE) for pattern in patterns):
-                            if tech not in detected:
-                                detected.append(tech)
-        
-        # Comments analysis
-        comments = soup.find_all(string=lambda text: isinstance(text, str) and text.strip().startswith('<!--'))
-        for comment in comments:
-            comment_text = comment.strip().lower()
-            for tech, data in self.tech_signatures.items():
-                patterns = data['patterns']
-                if any(re.search(pattern, comment_text, re.IGNORECASE) for pattern in patterns):
-                    if tech not in detected:
-                        detected.append(tech)
+            # Check for login forms
+            if any(keyword in action or keyword in form_html for keyword in ['login', 'signin', 'auth', 'oauth']):
+                detected.append({'name': 'Login Form', 'type': 'authentication', 'details': 'Form-Based Authentication'})
+            
+            # Check for OAuth flows
+            if 'oauth' in action or 'oauth' in form_html:
+                detected.append({'name': 'OAuth Flow', 'type': 'authentication', 'details': 'OAuth Authentication'})
+            
+            # Check for SAML
+            if 'saml' in action or 'saml' in form_html:
+                detected.append({'name': 'SAML Authentication', 'type': 'authentication', 'details': 'SAML SSO'})
         
         # Check for social media iframes/embeds
         for iframe in soup.find_all('iframe'):
             src = iframe.get('src', '').lower()
             if 'facebook' in src:
-                if 'Facebook SDK' not in detected:
-                    detected.append('Facebook SDK')
+                detected.append({'name': 'Facebook SDK', 'type': 'social', 'details': 'Social Media Integration'})
             if 'twitter' in src:
-                if 'Twitter Widgets' not in detected:
-                    detected.append('Twitter Widgets')
+                detected.append({'name': 'Twitter Widgets', 'type': 'social', 'details': 'Social Media Widgets'})
             if 'youtube' in src or 'youtu.be' in src:
-                if 'YouTube' not in detected:
-                    detected.append('YouTube')
+                detected.append({'name': 'YouTube', 'type': 'social', 'details': 'Video Embed'})
             if 'instagram' in src:
-                if 'Instagram Embed' not in detected:
-                    detected.append('Instagram Embed')
+                detected.append({'name': 'Instagram Embed', 'type': 'social', 'details': 'Social Media Embed'})
         
-        return list(set(detected))
+        # Check for authentication-related divs/classes
+        for element in soup.find_all(class_=True):
+            classes = ' '.join(element.get('class', [])).lower()
+            if any(auth_term in classes for auth_term in ['login', 'signin', 'auth', 'oauth', 'sso', '2fa', 'mfa']):
+                detected.append({'name': 'Authentication UI', 'type': 'authentication', 'details': 'Authentication Interface'})
+        
+        # Remove duplicates while preserving details
+        unique_detected = []
+        seen = set()
+        for item in detected:
+            key = (item['name'], item['type'])
+            if key not in seen:
+                seen.add(key)
+                unique_detected.append(item)
+        
+        return unique_detected
     
-    def check_common_paths(self, url: str) -> List[str]:
+    def check_common_paths(self, url: str) -> List[Dict]:
         """Check common paths for technology fingerprints"""
         detected = []
         common_paths = {
-            '/wp-admin/': 'WordPress',
-            '/wp-login.php': 'WordPress',
-            '/administrator/': 'Joomla',
-            '/user/login': 'Drupal',
-            '/admin/': 'Generic Admin',
-            '/robots.txt': 'Robots File',
+            '/wp-admin/': {'name': 'WordPress', 'type': 'cms', 'details': 'Admin Dashboard'},
+            '/wp-login.php': {'name': 'WordPress', 'type': 'cms', 'details': 'Login Page'},
+            '/administrator/': {'name': 'Joomla', 'type': 'cms', 'details': 'Admin Dashboard'},
+            '/user/login': {'name': 'Drupal', 'type': 'cms', 'details': 'Login Page'},
+            '/admin/': {'name': 'Generic Admin', 'type': 'admin', 'details': 'Admin Interface'},
+            '/robots.txt': {'name': 'Robots File', 'type': 'seo', 'details': 'Search Engine File'},
             # Authentication paths
-            '/auth/': 'Authentication',
-            '/login': 'Authentication',
-            '/signin': 'Authentication',
-            '/oauth/': 'OAuth',
-            '/oauth2/': 'OAuth2',
-            '/api/auth/': 'API Authentication',
+            '/auth/': {'name': 'Auth Endpoint', 'type': 'authentication', 'details': 'Authentication API'},
+            '/login': {'name': 'Login Page', 'type': 'authentication', 'details': 'Authentication Interface'},
+            '/signin': {'name': 'Sign In Page', 'type': 'authentication', 'details': 'Authentication Interface'},
+            '/oauth/': {'name': 'OAuth Endpoint', 'type': 'authentication', 'details': 'OAuth API'},
+            '/oauth2/': {'name': 'OAuth 2.0 Endpoint', 'type': 'authentication', 'details': 'OAuth 2.0 API'},
+            '/api/auth/': {'name': 'Auth API', 'type': 'authentication', 'details': 'Authentication API'},
+            '/saml/': {'name': 'SAML Endpoint', 'type': 'authentication', 'details': 'SAML SSO'},
+            '/.well-known/openid-configuration': {'name': 'OpenID Connect', 'type': 'authentication', 'details': 'OpenID Configuration'},
         }
         
-        for path, tech in common_paths.items():
+        for path, tech_info in common_paths.items():
             try:
                 test_url = url.rstrip('/') + path
                 response = requests.get(test_url, headers=self.headers, timeout=3, verify=False)
                 if response.status_code < 400:
-                    detected.append(tech)
+                    detected.append(tech_info)
+                    
+                    # Additional analysis for authentication endpoints
+                    if 'auth' in path or 'login' in path or 'oauth' in path:
+                        content = response.text.lower()
+                        
+                        # Check for specific authentication technologies
+                        if 'oauth' in path and ('token' in content or 'authorization' in content):
+                            detected.append({'name': 'OAuth Provider', 'type': 'authentication', 'details': 'OAuth Authorization Server'})
+                        
+                        if 'saml' in path:
+                            detected.append({'name': 'SAML Identity Provider', 'type': 'authentication', 'details': 'SAML SSO Provider'})
+                        
+                        # Check response headers for auth info
+                        headers = response.headers
+                        if 'www-authenticate' in str(headers).lower():
+                            detected.append({'name': 'HTTP Authentication', 'type': 'authentication', 'details': 'HTTP Auth Challenge'})
+                        
             except:
                 continue
         
@@ -438,7 +484,7 @@ class AdvancedTechDetector:
             'hosting': [],
             'analytics': [],
             'security': [],
-            'authentication': [],
+            'authentication': [],  # Will store dicts with name and type
             'social': [],
             'other': []
         }
@@ -456,6 +502,9 @@ class AdvancedTechDetector:
             'security': 'security',
             'authentication': 'authentication',
             'social': 'social',
+            'server': 'other',
+            'admin': 'other',
+            'seo': 'other',
             'css': 'other',
             'js': 'other',
             'icons': 'other',
@@ -476,28 +525,10 @@ class AdvancedTechDetector:
             # Step 2: Analyze headers
             print("\033[93m[+] Analyzing HTTP headers...\033[0m")
             header_techs = self.analyze_headers(response)
-            for tech in header_techs:
-                # Categorize header technologies
-                server_techs = ['Apache', 'Nginx', 'Microsoft-IIS']
-                backend_techs = ['PHP', 'ASP.NET', 'Node.js', 'Django', 'Express.js']
-                hosting_techs = ['Vercel', 'Netlify', 'Heroku', 'Cloudflare']
-                cloud_techs = ['Amazon Web Services', 'Azure', 'Google Cloud']
-                
-                if tech in server_techs:
-                    if tech not in results['other']:
-                        results['other'].append(tech)
-                elif tech in backend_techs:
-                    if tech not in results['backend']:
-                        results['backend'].append(tech)
-                elif tech in hosting_techs:
-                    if tech not in results['hosting']:
-                        results['hosting'].append(tech)
-                elif tech in cloud_techs:
-                    if tech not in results['cloud']:
-                        results['cloud'].append(tech)
-                else:
-                    if tech not in results['other']:
-                        results['other'].append(tech)
+            for tech_info in header_techs:
+                category = type_to_category.get(tech_info['type'], 'other')
+                if tech_info not in results[category]:
+                    results[category].append(tech_info)
             
             print(f"\033[92m  ✓ Found {len(header_techs)} technologies in headers\033[0m")
             
@@ -506,38 +537,39 @@ class AdvancedTechDetector:
             html_techs = self.analyze_html_content(response.text)
             
             # Categorize HTML technologies
-            for tech in html_techs:
-                if tech in self.tech_signatures:
-                    tech_type = self.tech_signatures[tech]['type']
-                    category = type_to_category.get(tech_type, 'other')
-                    if tech not in results[category]:
-                        results[category].append(tech)
-                else:
-                    # Check for social media platforms detected
-                    if any(social in tech.lower() for social in ['facebook', 'twitter', 'linkedin', 'instagram', 'pinterest', 'youtube', 'tiktok']):
-                        if tech not in results['social']:
-                            results['social'].append(tech)
-                    elif tech not in results['other']:
-                        results['other'].append(tech)
+            for tech_info in html_techs:
+                category = type_to_category.get(tech_info['type'], 'other')
+                
+                # Special handling for authentication to ensure details are shown
+                if category == 'authentication' and 'details' in tech_info:
+                    # Format authentication entry to show type
+                    formatted_entry = {
+                        'name': tech_info['name'],
+                        'type': tech_info['details']  # Use details as the type display
+                    }
+                    if formatted_entry not in results[category]:
+                        results[category].append(formatted_entry)
+                elif tech_info not in results[category]:
+                    results[category].append(tech_info)
             
             print(f"\033[92m  ✓ Found {len(html_techs)} technologies in HTML\033[0m")
             
             # Step 4: Check common paths
             print("\033[93m[+] Checking common paths...\033[0m")
             path_techs = self.check_common_paths(url)
-            for tech in path_techs:
-                if tech == 'WordPress':
-                    if 'WordPress' not in results['cms']:
-                        results['cms'].append('WordPress')
-                elif tech == 'Joomla':
-                    if 'Joomla' not in results['cms']:
-                        results['cms'].append('Joomla')
-                elif tech == 'Drupal':
-                    if 'Drupal' not in results['cms']:
-                        results['cms'].append('Drupal')
-                elif tech in ['Authentication', 'OAuth', 'OAuth2', 'API Authentication']:
-                    if 'Authentication System' not in results['authentication']:
-                        results['authentication'].append('Authentication System')
+            for tech_info in path_techs:
+                category = type_to_category.get(tech_info['type'], 'other')
+                
+                # Special formatting for authentication
+                if category == 'authentication':
+                    formatted_entry = {
+                        'name': tech_info['name'],
+                        'type': tech_info['details']
+                    }
+                    if formatted_entry not in results[category]:
+                        results[category].append(formatted_entry)
+                elif tech_info not in results[category]:
+                    results[category].append(tech_info)
             
             print(f"\033[92m  ✓ Checked common paths\033[0m")
             
@@ -548,13 +580,30 @@ class AdvancedTechDetector:
             for category, techs in results.items():
                 if techs:
                     print(f"\n\033[93m{category.upper()}:\033[0m")
-                    for tech in sorted(techs):
-                        print(f"  \033[92m✓\033[0m {tech}")
+                    for tech in techs:
+                        if isinstance(tech, dict):
+                            if 'type' in tech and tech['type']:
+                                print(f"  \033[92m✓\033[0m {tech['name']} (\033[94m{tech['type']}\033[0m)")
+                            else:
+                                print(f"  \033[92m✓\033[0m {tech['name']}")
+                        else:
+                            print(f"  \033[92m✓\033[0m {tech}")
             
             # Summary
             print("\n\033[96m" + "="*70 + "\033[0m")
             total_techs = sum(len(techs) for techs in results.values())
-            print(f"\033[92m[+] Total technologies detected: {total_techs}\033[0m")
+            
+            # Count authentication types
+            auth_techs = results.get('authentication', [])
+            if auth_techs:
+                print(f"\n\033[92m[+] Authentication Methods Found:\033[0m")
+                for auth in auth_techs:
+                    if isinstance(auth, dict) and 'type' in auth:
+                        print(f"  • {auth['name']}: \033[94m{auth['type']}\033[0m")
+                    else:
+                        print(f"  • {auth}")
+            
+            print(f"\n\033[92m[+] Total technologies detected: {total_techs}\033[0m")
             
         except Exception as e:
             print(f"\033[91m  ✗ Error during analysis: {e}\033[0m")
